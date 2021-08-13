@@ -2,22 +2,13 @@ import { startEventDay, timeStart, timeEnd } from '../util.js';
 export const createTripPointTemplate = (waypoint) => {
   const favoriteButtonClasses = waypoint.isFavorite ? 'event__favorite-btn event__favorite-btn--active' : 'event__favorite-btn';
 
-  const makeOffersTemplate = (offers) => {
-    const offersArr = new Array;
-    for(const offer of offers.offers) {
-      const map = new Map(Object.entries(offer));
-      const title = map.get('title');
-      const price = map.get('price');
-
-      const offerElement = `<li class="event__offer">
-      <span class="event__offer-title">${title}</span>
+  const makeOffersTemplate = (offers) =>
+    offers.offers.map((offer) => `<li class="event__offer">
+      <span class="event__offer-title">${offer.title}</span>
       &plus;&euro;&nbsp;
-      <span class="event__offer-price">${price}</span>
-      </li>`;
-      offersArr.push(offerElement);
-    }
-    return offersArr.join('');
-  };
+      <span class="event__offer-price">${offer.price}</span>
+      </li>`).join('');
+
 
   return `<li class="trip-events__item">
   <div class="event">
@@ -39,7 +30,7 @@ export const createTripPointTemplate = (waypoint) => {
     </p>
     <h4 class="visually-hidden">Offers:</h4>
     <ul class="event__selected-offers">
-      ${makeOffersTemplate(waypoint.Offer)}
+      ${makeOffersTemplate(waypoint.offer)}
     </ul>
     <button class="${favoriteButtonClasses}" type="button">
       <span class="visually-hidden">Add to favorite</span>

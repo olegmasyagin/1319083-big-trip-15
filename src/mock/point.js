@@ -55,7 +55,7 @@ const getPoint = () => {
   const dateTo = getDateTo(dateFrom);
   const durationTime = getDurationDate(dateFrom, dateTo);
   const typePoint = POINT_TYPES[getRandomInteger(0, POINT_TYPES.length - 1)];
-  const Offer = getMainOffer(typePoint, OFFER_TITLES);
+  const offer = getMainOffer(typePoint, OFFER_TITLES);
 
   return {
     type: typePoint,
@@ -66,7 +66,7 @@ const getPoint = () => {
     durationTime,
     isFavorite: Boolean(getRandomInteger(0, 1)),
     destination: getRandomArrayElement(getDestinations()),
-    Offer,
+    offer,
   };
 };
 

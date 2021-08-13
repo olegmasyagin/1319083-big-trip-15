@@ -10,27 +10,14 @@ const makeTypeEvent = (currentType) => POINT_TYPES.map((type) => `<div class="ev
   <label class="event__type-label  event__type-label--${type}" for="event-type-${type}-${currentType.id}">${type[0].toUpperCase() + type.slice(1)}</label>
 </div>`).join('');
 
-const makeOffersTemplate = (offers) => {
-  const offerItems = new Array;
-  for(const offer of offers.offers) {
-    const map = new Map(Object.entries(offer));
-    const title = map.get('title');
-    const price = map.get('price');
-    const checked = map.get('checked');
-    const offerId = map.get('id');
-
-    const offerItem = `<div class="event__offer-selector">
-    <input class="event__offer-checkbox  visually-hidden" id="event-offer-${offers.type}-${offerId}" type="checkbox" name="event-offer-${offers.type}" ${checked ? 'checked' : ''}>
-    <label class="event__offer-label" for="event-offer-${offers.type}-${offerId}">
-      <span class="event__offer-title">${title}</span>
+const makeOffersTemplate = (offers) => offers.offers.map((offer) => `<div class="event__offer-selector">
+    <input class="event__offer-checkbox  visually-hidden" id="event-offer-${offers.type}-${offer.id}" type="checkbox" name="event-offer-${offers.type}" ${offer.checked ? 'checked' : ''}>
+    <label class="event__offer-label" for="event-offer-${offers.type}-${offer.id}">
+      <span class="event__offer-title">${offer.title}</span>
       &plus;&euro;&nbsp;
-      <span class="event__offer-price">${price}</span>
+      <span class="event__offer-price">${offer.price}</span>
     </label>
-    </div>`;
-    offerItems.push(offerItem);
-  }
-  return offerItems.join('');
-};
+    </div>`).join('');
 
 const makeDestinationName = () => CITIES.map((dest) =>`<option value="${dest}"></option>`).join('');
 
@@ -90,7 +77,7 @@ export const createEditTripPointTemplate = (waypoint = defaultCard) => (`<li cla
       <section class="event__section  event__section--offers">
         <h3 class="event__section-title  event__section-title--offers">Offers</h3>
         <div class="event__available-offers">
-          ${makeOffersTemplate(waypoint.Offer)}
+           ${makeOffersTemplate(waypoint.offer)}
         </div>
       </section>
 

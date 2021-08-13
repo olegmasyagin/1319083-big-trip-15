@@ -1,4 +1,4 @@
-import { SENTENCES, PICTURE_COUNT_MIN, PICTURE_COUNT_MAX } from './data.js';
+import { SENTENCES, PICTURE_COUNT_MIN, PICTURE_COUNT_MAX, MIN_CITIES_LENGTH } from './data.js';
 import dayjs from 'dayjs';
 
 const getRandomInteger = (a = 0, b = 1) => {
@@ -38,6 +38,33 @@ const timeEnd = (dateTo) => dayjs(dateTo).format('HH:MM');
 const eventStartTime = (dateFrom) => dayjs(dateFrom).format('DD/MM/YY HH:mm');
 const eventEndTime = (dateTo) => dayjs(dateTo).format('DD/MM/YY HH:mm');
 
-const sumCoast = (accumulator, currentValue) => accumulator + currentValue;
+const getPointsCost = (points) => {
+  const pointCost = points.reduce((acc, point) => acc + point.basePrice, 0);
+  return pointCost;
+};
 
-export {getRandomInteger, getRandomArrayElement, getPicturesArray, getRandomLengthArray, timeStart, timeEnd, eventEndTime,eventStartTime, sumCoast, startEventDay, endEventDay};
+const getOffersCost = (points) => {
+  let totalCost = 0;
+  for(const point of points) {
+    totalCost = totalCost + point.offer.offers.map((offer) => offer.price).reduce((acc, offer) => acc + offer);
+  }
+  return totalCost;
+};
+
+const getTotalCost = (points) => {
+  const totalCost = getPointsCost(points) + getOffersCost(points);
+  return totalCost;
+};
+
+const getRoute = (points) => {
+  const cities = [...new Set(points.map((point) => point.destination.name))];
+  const lastCity = cities.slice([cities.length -1]);
+
+  if(cities.length > MIN_CITIES_LENGTH) {
+    return `${cities.slice(0, MIN_CITIES_LENGTH - 1).join(' &mdash; ')}&mdash; . . . &mdash; ${lastCity.join(' &mdash; ')}`;
+  }
+  return cities.join(' &mdash; ');
+};
+
+
+export {getRandomInteger, getRandomArrayElement, getPicturesArray, getRandomLengthArray, timeStart, timeEnd, eventEndTime,eventStartTime, getTotalCost, startEventDay, endEventDay, getRoute};

@@ -38,3 +38,4 @@ render(tripEventsListElement, createEditTripPointTemplate(), 'beforeend');
 for(let i = 0; i < WAYPOINT_COUNT; i++) {
   render(tripEventsListElement, createTripPointTemplate(waypoints[i]), 'beforeend');
 }
+

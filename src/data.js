@@ -1,14 +1,14 @@
 
 const POINT_TYPES = [
-  'Taxi',
-  'Bus',
-  'Train',
-  'Ship',
-  'Drive',
-  'Flight',
-  'Check-in',
-  'Sightseeing',
-  'Restaurant',
+  'taxi',
+  'bus',
+  'train',
+  'ship',
+  'drive',
+  'flight',
+  'check-in',
+  'sightseeing',
+  'restaurant',
 ];
 
 const CITIES = [
@@ -55,5 +55,6 @@ const MSEC_IN_DAY = 86400000;
 
 const MAX_ID_NUMBER = 100;
 
+const MIN_CITIES_LENGTH = 5;
 
-export {POINT_TYPES, CITIES, SENTENCES, PRICE_MIN, PRICE_MAX, OFFER_TITLES, PICTURE_COUNT_MIN, PICTURE_COUNT_MAX, MAX_DAY_GAP, MAX_HOUR_GAP, MAX_MIN_GAP, MSEC_IN_HOUR, MSEC_IN_DAY, MAX_ID_NUMBER};
+export {POINT_TYPES, CITIES, SENTENCES, PRICE_MIN, PRICE_MAX, OFFER_TITLES, PICTURE_COUNT_MIN, PICTURE_COUNT_MAX, MAX_DAY_GAP, MAX_HOUR_GAP, MAX_MIN_GAP, MSEC_IN_HOUR, MSEC_IN_DAY, MAX_ID_NUMBER, MIN_CITIES_LENGTH};
