@@ -1,6 +1,6 @@
 import { CITIES, POINT_TYPES } from '../data.js';
 import { getPoint } from '../mock/point.js';
-import { eventStartTime, eventEndTime } from '../util.js';
+import { eventStartTime, eventEndTime, createElement } from '../util.js';
 
 const defaultCard = getPoint();
 
@@ -23,7 +23,7 @@ const makeDestinationName = () => CITIES.map((dest) =>`<option value="${dest}"><
 
 const renderPictures = (dest) => dest.pictures.map((picture) => `<img class="event__photo" src="${picture.src}" alt="${picture.description}">`).join('');
 
-export const createEditTripPointTemplate = (waypoint = defaultCard) => (`<li class="trip-events__item">
+const createEditTripPointTemplate = (waypoint = defaultCard) => (`<li class="trip-events__item">
   <form class="event event--edit" action="#" method="post">
     <header class="event__header">
       <div class="event__type-wrapper">
@@ -95,3 +95,27 @@ export const createEditTripPointTemplate = (waypoint = defaultCard) => (`<li cla
     </section>
   </form>
 </li>`);
+
+class EditTripPoint {
+  constructor(waypoint = defaultCard) {
+    this._waypoint = waypoint;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createEditTripPointTemplate(this._waypoint);
+  }
+
+  getElement() {
+    if(!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
+
+export default EditTripPoint;
