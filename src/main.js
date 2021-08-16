@@ -29,19 +29,14 @@ render(tripEventsElement, new EventListView().getElement(), RenderPosition.BEFOR
 
 const tripEventsListElement = tripEventsElement.querySelector('.trip-events__list');
 
-const renderPointList = (container, points) => {
-  if(points.length === 0) {
-    render(container, new NoEventView().getElement(), RenderPosition.BEFOREEND);
-  }
-  render(tripMainElement, new TripInfoView(waypoints).getElement(), RenderPosition.AFTERBEGIN);
+const renderPoints = (points) => {
+  render(tripMainElement, new TripInfoView(points).getElement(), RenderPosition.AFTERBEGIN);
   render(tripEventsElement, new SortingView().getElement(), RenderPosition.AFTERBEGIN);
   points.forEach((waypoint) => {
     const tripPointViewElement = new TripPointView(waypoint).getElement();
     render(tripEventsListElement, tripPointViewElement, RenderPosition.BEFOREEND);
     const editTripPointViewElement = new EditTripPointView(waypoint).getElement();
-    const editForm = editTripPointViewElement.querySelector('form');
-    const rollUpButton = tripPointViewElement.querySelector('.event__rollup-btn');
-    const closeButton  = editTripPointViewElement.querySelector('.event__rollup-btn');
+
     const replacePointToForm = () => {
       tripEventsListElement.replaceChild(editTripPointViewElement, tripPointViewElement);
     };
@@ -58,22 +53,30 @@ const renderPointList = (container, points) => {
       }
     };
 
-    editForm.addEventListener('submit', (evt) => {
+    editTripPointViewElement.querySelector('form').addEventListener('submit', (evt) => {
       evt.preventDefault();
       replaceFormToPoint();
       document.removeEventListener('keydown', onEscKeyDown);
     });
 
-    rollUpButton.addEventListener('click', () => {
+    tripPointViewElement.querySelector('.event__rollup-btn').addEventListener('click', () =>{
       replacePointToForm();
       document.addEventListener('keydown', onEscKeyDown);
     });
 
-    closeButton.addEventListener('click', () =>{
+    editTripPointViewElement.querySelector('.event__rollup-btn').addEventListener('click', () =>{
       replaceFormToPoint();
       document.removeEventListener('keydown', onEscKeyDown);
     });
   });
+};
+
+const renderPointList = (container, points) => {
+  if(points.length === 0) {
+    render(container, new NoEventView().getElement(), RenderPosition.BEFOREEND);
+    return;
+  }
+  renderPoints(points);
 };
 
 renderPointList(tripEventsElement, waypoints);
