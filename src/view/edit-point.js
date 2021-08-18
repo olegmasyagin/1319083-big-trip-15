@@ -116,7 +116,7 @@ class EditTripPoint extends AbstractView {
 
   setSubmitHandler(callback) {
     this._callback.submit = callback;
-    this.getElement().querySelector('form').removeEventListener('submit', this._submitHandler);
+    this.getElement().querySelector('form').addEventListener('submit', this._submitHandler);
   }
 
   _closeFormHandler(evt) {
