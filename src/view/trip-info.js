@@ -1,4 +1,5 @@
-import { getTotalCost, startEventDay, endEventDay, getRoute, createElement } from '../util.js';
+import { getTotalCost, startEventDay, endEventDay, getRoute} from './utils.js/points.js';
+import AbstractView from './abstract.js';
 
 const createTripInfoTemplate = (waypoints) => `<section class="trip-main__trip-info  trip-info">
    <div class="trip-info__main">
@@ -10,25 +11,14 @@ const createTripInfoTemplate = (waypoints) => `<section class="trip-main__trip-i
    </p>
  </section>`;
 
-class TripInfo {
+class TripInfo extends AbstractView {
   constructor(waypoints) {
+    super();
     this._waypoints = waypoints;
-    this._element = null;
   }
 
-  getTempate() {
+  getTemplate() {
     return createTripInfoTemplate(this._waypoints);
-  }
-
-  getElement() {
-    if(!this._element) {
-      this._element = createElement(this.getTempate());
-    }
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }
 
