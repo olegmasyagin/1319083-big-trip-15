@@ -1,19 +1,22 @@
 import SortingView from '../view/sorting.js';
 import EventListView from '../view/trip-events-list.js';
 import NoEventView from '../view/no-event.js';
-// import EditTripPointView from '../view/edit-point.js';
-// import TripPointView from '../view/trip-point.js';
 import PointPresenter from './point.js';
+import { updateItem } from '../view/utils.js/common.js';
 
-import { render, RenderPosition } from '../view/utils.js/render.js';
+import { remove, render, RenderPosition } from '../view/utils.js/render.js';
 
 class Events {
   constructor(eventsContainer) {
     this._eventsContainer = eventsContainer;
+    this._pointPresenter = new Map();
 
     this._eventsComponent = new EventListView();
     this._sortComponent = new SortingView();
     this._noEventComponent = new NoEventView();
+
+    this._pointChangeHandler = this._pointChangeHandler.bind(this);
+    this._modeChangeHandler = this._modeChangeHandler.bind(this);
   }
 
   init(waypoints) {
@@ -24,39 +27,29 @@ class Events {
     this._renderEventsList();
   }
 
+  _modeChangeHandler() {
+    this._pointPresenter.forEach((presenter) => presenter.resetView());
+  }
+
+  _pointChangeHandler(updatedPoint) {
+    this._points = updateItem(this._waypoints, updatedPoint);
+    this._pointPresenter.get(updatedPoint.id).init(updatedPoint);
+  }
+
   _renderSort() {
     render(this._eventsComponent, this._sortComponent, RenderPosition.AFTERBEGIN);
   }
 
   _renderPoint(waypoint) {
-    const pointPresenter = new PointPresenter(this._eventsComponent);
+    const pointPresenter = new PointPresenter(this._eventsComponent, this._pointChangeHandler, this._modeChangeHandler);
     pointPresenter.init(waypoint);
-    // const tripPointView = new TripPointView(waypoint);
-    // render(this._eventsComponent, tripPointView, RenderPosition.BEFOREEND);
-    // const editTripPointView = new EditTripPointView(waypoint);
+    this._pointPresenter.set(waypoint.id, pointPresenter);
+  }
 
-    // const onEscKeyDown = (evt) => {
-    //   if(evt.key === 'Escape' || evt.key === 'Esc') {
-    //     evt.preventDefault();
-    //     replace(tripPointView, editTripPointView);
-    //     document.removeEventListener('keydown', onEscKeyDown);
-    //   }
-    // };
-
-    // editTripPointView.setSubmitHandler(() => {
-    //   replace(tripPointView, editTripPointView);
-    //   document.removeEventListener('keydown', onEscKeyDown);
-    // });
-
-    // tripPointView.setEditClickHandler(() =>{
-    //   replace(editTripPointView, tripPointView);
-    //   document.addEventListener('keydown', onEscKeyDown);
-    // });
-
-    // editTripPointView.setCloseFormHandler(() =>{
-    //   replace(tripPointView, editTripPointView);
-    //   document.removeEventListener('keydown', onEscKeyDown);
-    // });
+  _clearPoints() {
+    this._pointPresenter.forEach((presenter) => presenter.destroy());
+    this._pointPresenter.clear();
+    remove(this._sortComponent);
   }
 
   _renderNoEvents() {

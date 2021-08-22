@@ -111,7 +111,7 @@ class EditTripPoint extends AbstractView {
 
   _submitHandler(evt) {
     evt.preventDefault();
-    this._callback.submit();
+    this._callback.submit(this._waypoint);
   }
 
   setSubmitHandler(callback) {
