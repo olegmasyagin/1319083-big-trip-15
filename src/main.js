@@ -18,13 +18,13 @@ const tripFiltersElement = siteHeaderElement.querySelector('.trip-controls__filt
 
 const tripEventsElement = siteMainElement.querySelector('.trip-events');
 
+const eventsPresenter = new EventsPresenter(tripEventsElement);
+
 render(tripMenuElement, new SiteMenuView(), RenderPosition.BEFOREEND);
 render(tripFiltersElement, new FilterView(), RenderPosition.BEFOREEND);
 
 if(waypoints.length !== 0) {
   render(tripMainElement, new TripInfoView(waypoints), RenderPosition.AFTERBEGIN);
 }
-
-const eventsPresenter = new EventsPresenter(tripEventsElement);
 
 eventsPresenter.init(waypoints);

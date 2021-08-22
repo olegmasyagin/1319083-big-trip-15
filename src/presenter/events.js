@@ -1,10 +1,11 @@
 import SortingView from '../view/sorting.js';
 import EventListView from '../view/trip-events-list.js';
 import NoEventView from '../view/no-event.js';
-import EditTripPointView from '../view/edit-point.js';
-import TripPointView from '../view/trip-point.js';
+// import EditTripPointView from '../view/edit-point.js';
+// import TripPointView from '../view/trip-point.js';
+import PointPresenter from './point.js';
 
-import { render, RenderPosition, replace } from '../view/utils.js/render.js';
+import { render, RenderPosition } from '../view/utils.js/render.js';
 
 class Events {
   constructor(eventsContainer) {
@@ -28,32 +29,34 @@ class Events {
   }
 
   _renderPoint(waypoint) {
-    const tripPointView = new TripPointView(waypoint);
-    render(this._eventsComponent, tripPointView, RenderPosition.BEFOREEND);
-    const editTripPointView = new EditTripPointView(waypoint);
+    const pointPresenter = new PointPresenter(this._eventsComponent);
+    pointPresenter.init(waypoint);
+    // const tripPointView = new TripPointView(waypoint);
+    // render(this._eventsComponent, tripPointView, RenderPosition.BEFOREEND);
+    // const editTripPointView = new EditTripPointView(waypoint);
 
-    const onEscKeyDown = (evt) => {
-      if(evt.key === 'Escape' || evt.key === 'Esc') {
-        evt.preventDefault();
-        replace(tripPointView, editTripPointView);
-        document.removeEventListener('keydown', onEscKeyDown);
-      }
-    };
+    // const onEscKeyDown = (evt) => {
+    //   if(evt.key === 'Escape' || evt.key === 'Esc') {
+    //     evt.preventDefault();
+    //     replace(tripPointView, editTripPointView);
+    //     document.removeEventListener('keydown', onEscKeyDown);
+    //   }
+    // };
 
-    editTripPointView.setSubmitHandler(() => {
-      replace(tripPointView, editTripPointView);
-      document.removeEventListener('keydown', onEscKeyDown);
-    });
+    // editTripPointView.setSubmitHandler(() => {
+    //   replace(tripPointView, editTripPointView);
+    //   document.removeEventListener('keydown', onEscKeyDown);
+    // });
 
-    tripPointView.setEditClickHandler(() =>{
-      replace(editTripPointView, tripPointView);
-      document.addEventListener('keydown', onEscKeyDown);
-    });
+    // tripPointView.setEditClickHandler(() =>{
+    //   replace(editTripPointView, tripPointView);
+    //   document.addEventListener('keydown', onEscKeyDown);
+    // });
 
-    editTripPointView.setCloseFormHandler(() =>{
-      replace(tripPointView, editTripPointView);
-      document.removeEventListener('keydown', onEscKeyDown);
-    });
+    // editTripPointView.setCloseFormHandler(() =>{
+    //   replace(tripPointView, editTripPointView);
+    //   document.removeEventListener('keydown', onEscKeyDown);
+    // });
   }
 
   _renderNoEvents() {
